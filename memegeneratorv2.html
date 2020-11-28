@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator V2</title>
+    <style>
+        h1 {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Meme Templates</h1>
+    <select id="memes"></select>
+    <!-- <button id="select">Select</button> -->
+    <div id="result">
+        <img id="image" src="https://i.imgflip.com/30b1gx.jpg">
+    </div>
+    
+</body>
+<script>
+    let arr = []
+    let counter = 0
+    function fetchMemes(){
+        fetch('https://api.imgflip.com/get_memes')
+        .then((res) => res.json())
+        .then(enddata => {console.log(enddata.data.memes);for (var i in enddata.data.memes) {
+            let list = document.getElementById('memes')
+            let newmeme = document.createElement('option')
+            newmeme.id = i
+            newmeme.value = enddata.data.memes[i].name
+            arr.push([counter,enddata.data.memes[i].name,enddata.data.memes[i].url])
+            counter +=1;
+            list.appendChild(newmeme)
+            newmeme.innerHTML = enddata.data.memes[i].name
+            var press = document.getElementById('select');
+            // press.addEventListener('click', () => {
+            //     let memeresult = document.getElementById("image");
+            //     console.log(list.value)
+            // })
+            // console.log(list.value)
+            
+        }
+      
+                 let list = document.getElementById('memes')
+                 let memeresult = document.getElementById("image");
+                 list.addEventListener('change',() => {
+                    for (var y in arr) {
+                    if (arr[y].includes(list.value)) {
+                        console.log(arr[y][0])
+                        memeresult.src = arr[y][2]
+                    }}
+                 })
+
+        
+    })
+        .catch(error => alert("Sum Ting Wong"))
+        
+}
+fetchMemes()
+</script>
+
+</html>
